@@ -1,8 +1,10 @@
+server:
+  port: 8081
 spring:
   application:
     name: orcat
   datasource:
-    url: jdbc:postgresql://localhost:5432/orcat
+    url: jdbc:postgresql://localhost:1111/orcat
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

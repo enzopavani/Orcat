@@ -1,0 +1,10 @@
+create table author(
+    id uuid not null primary key,
+    name varchar(150) not null,
+    email varchar(100) not null,
+    password varchar(20) not null,
+    nationality varchar(100),
+    birthdate timestamp not null,
+    account_birthdate timestamp,
+    last_update timestamp
+);
