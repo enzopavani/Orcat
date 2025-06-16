@@ -37,13 +37,13 @@ public class Author {
 
     @Past
     @Column(name = "birthdate", nullable = false)
-    private LocalDate Birthdate;
+    private LocalDate birthdate;
 
     @CreatedDate
     @Column(name = "account_birthdate")
-    private LocalDate AccountBirthdate;
+    private LocalDate accountBirthdate;
 
     @LastModifiedDate
     @Column(name = "last_update")
-    private LocalDate LastUpdate;
+    private LocalDate lastUpdate;
 }

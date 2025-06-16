@@ -13,7 +13,11 @@ public class AuthorService {
 
     private final AuthorRepository repository;
 
-    public List<Author> listAuthors() {
+    public List<Author> findAll() {
         return repository.findAll();
+    }
+
+    public Author save(Author author) {
+        return repository.save(author);
     }
 }
