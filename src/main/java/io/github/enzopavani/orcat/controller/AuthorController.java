@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,5 +34,16 @@ public class AuthorController implements GenericController {
         service.save(author);
         URI location = generateHeaderLocation(author.getId());
         return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        UUID authorId = UUID.fromString(id);
+        Optional<Author> author = service.findById(authorId);
+        if(author.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        service.delete(author.get());
+        return ResponseEntity.noContent().build();
     }
 }

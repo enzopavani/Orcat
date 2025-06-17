@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +19,15 @@ public class AuthorService {
         return repository.findAll();
     }
 
+    public Optional<Author> findById(UUID id) {
+        return repository.findById(id);
+    }
+
     public Author save(Author author) {
         return repository.save(author);
+    }
+
+    public void delete(Author author) {
+        repository.delete(author);
     }
 }
