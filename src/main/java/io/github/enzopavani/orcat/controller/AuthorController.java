@@ -6,6 +6,7 @@ import io.github.enzopavani.orcat.model.Author;
 import io.github.enzopavani.orcat.service.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +22,6 @@ public class AuthorController implements GenericController {
 
     private final AuthorService service;
     private final AuthorMapper mapper;
-
-    @GetMapping
-    public ResponseEntity<List<Author>> findAll() {
-        List<Author> list = service.findAll();
-        return ResponseEntity.ok(list);
-    }
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody @Valid AuthorDTO dto) {
@@ -62,5 +57,25 @@ public class AuthorController implements GenericController {
         author.setBirthdate(dto.birthdate());
         service.update(author);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<AuthorDTO>> pageSearch(
+            @RequestParam(value = "name", required = false)
+            String name,
+            @RequestParam(value = "email", required = false)
+            String email,
+            @RequestParam(value = "nationality", required = false)
+            String nationality,
+            @RequestParam(value = "birthdate-year", required = false)
+            Integer birthdateYear,
+            @RequestParam(value = "page", defaultValue = "0")
+            Integer page,
+            @RequestParam(value = "page-size", defaultValue = "5")
+            Integer pageSize
+    ) {
+        Page<Author> authorPage = service.search(name, email, nationality, birthdateYear, page, pageSize);
+        Page<AuthorDTO> dtoPage = authorPage.map(mapper::toDTO);
+        return ResponseEntity.ok(dtoPage);
     }
 }
