@@ -3,6 +3,7 @@ package io.github.enzopavani.orcat.service;
 import io.github.enzopavani.orcat.model.Author;
 import io.github.enzopavani.orcat.repository.AuthorRepository;
 import io.github.enzopavani.orcat.repository.specs.AuthorSpecs;
+import io.github.enzopavani.orcat.validator.AuthorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class AuthorService {
 
     private final AuthorRepository repository;
+    private final AuthorValidator validator;
 
     public List<Author> findAll() {
         return repository.findAll();
@@ -29,6 +31,7 @@ public class AuthorService {
     }
 
     public Author save(Author author) {
+        validator.validate(author);
         return repository.save(author);
     }
 
@@ -40,6 +43,7 @@ public class AuthorService {
         if(author.getId() == null) {
             throw new IllegalArgumentException("Esse autor não existe na base de dados");
         }
+        validator.validate(author);
         repository.save(author);
     }
 
