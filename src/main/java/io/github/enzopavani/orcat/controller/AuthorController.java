@@ -46,4 +46,21 @@ public class AuthorController implements GenericController {
         service.delete(author.get());
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid AuthorDTO dto) {
+        UUID authorId = UUID.fromString(id);
+        Optional<Author> optionalAuthor = service.findById(authorId);
+        if(optionalAuthor.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Author author = optionalAuthor.get();
+        author.setName(dto.name());
+        author.setEmail(dto.email());
+        author.setPassword(dto.password());
+        author.setNationality(dto.nationality());
+        author.setBirthdate(dto.birthdate());
+        service.update(author);
+        return ResponseEntity.noContent().build();
+    }
 }

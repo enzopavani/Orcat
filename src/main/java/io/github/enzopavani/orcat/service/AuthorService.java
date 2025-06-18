@@ -30,4 +30,11 @@ public class AuthorService {
     public void delete(Author author) {
         repository.delete(author);
     }
+
+    public void update(Author author) {
+        if(author.getId() == null) {
+            throw new IllegalArgumentException("Esse autor não existe na base de dados");
+        }
+        repository.save(author);
+    }
 }
