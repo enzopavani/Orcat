@@ -6,5 +6,16 @@ create table author(
     nationality varchar(100),
     birthdate timestamp not null,
     account_birthdate timestamp,
-    last_update timestamp
+    last_update timestamp,
+    id_client uuid
+);
+
+create table post(
+    id uuid not null primary key,
+    title varchar(100) not null,
+    description varchar(500),
+    id_author uuid not null references author(id),
+    post_birthdate timestamp,
+    last_update timestamp,
+    id_client uuid
 );

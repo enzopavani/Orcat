@@ -1,5 +1,6 @@
 package io.github.enzopavani.orcat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Past;
@@ -9,6 +10,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -38,6 +41,10 @@ public class Author {
     @Past
     @Column(name = "birthdate", nullable = false)
     private LocalDate birthdate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "originalAuthor")
+    private List<Post> posts = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "account_birthdate")

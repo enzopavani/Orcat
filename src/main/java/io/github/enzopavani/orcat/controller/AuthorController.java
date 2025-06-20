@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,11 +33,11 @@ public class AuthorController implements GenericController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         UUID authorId = UUID.fromString(id);
-        Optional<Author> author = service.findById(authorId);
-        if(author.isEmpty()) {
+        Optional<Author> optionalAuthor = service.findById(authorId);
+        if(optionalAuthor.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        service.delete(author.get());
+        service.delete(optionalAuthor.get());
         return ResponseEntity.noContent().build();
     }
 
