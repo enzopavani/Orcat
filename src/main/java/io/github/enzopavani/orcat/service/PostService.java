@@ -2,7 +2,12 @@ package io.github.enzopavani.orcat.service;
 
 import io.github.enzopavani.orcat.model.Post;
 import io.github.enzopavani.orcat.repository.PostRepository;
+import io.github.enzopavani.orcat.repository.specs.PostSpecs;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,5 +41,26 @@ public class PostService {
             throw new IllegalArgumentException("Esse post não existe na base de dados");
         }
         repository.save(post);
+    }
+
+    public Page<Post> search(
+        String title,
+        String description,
+        String authorId,
+        Integer page,
+        Integer pageSize
+    ) {
+        Specification<Post> specs = Specification.where((root, query, cb) -> cb.conjunction());
+        if(title != null) {
+            specs = specs.and(PostSpecs.titleLike(title));
+        }
+        if(description != null) {
+            specs = specs.and(PostSpecs.descriptionLike(description));
+        }
+        if(authorId != null) {
+            specs = specs.and(PostSpecs.authorIdEqual(UUID.fromString(authorId)));
+        }
+        Pageable pageRequest = PageRequest.of(page, pageSize);
+        return repository.findAll(specs, pageRequest);
     }
 }

@@ -2,6 +2,7 @@ package io.github.enzopavani.orcat.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "post", schema = "public")
 @Data
+@ToString(exclude = "originalAuthor")
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
 
@@ -34,7 +36,7 @@ public class Post {
     @Column(name = "last_update")
     private LocalDate lastUpdate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_author")
     private Author originalAuthor;
 

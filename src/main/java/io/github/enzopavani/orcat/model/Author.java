@@ -1,10 +1,10 @@
 package io.github.enzopavani.orcat.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "author", schema = "public")
 @Data
+@ToString(exclude = "posts")
 @EntityListeners(AuditingEntityListener.class)
 public class Author {
 
@@ -42,8 +43,7 @@ public class Author {
     @Column(name = "birthdate", nullable = false)
     private LocalDate birthdate;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "originalAuthor")
+    @OneToMany(mappedBy = "originalAuthor", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
     @CreatedDate
